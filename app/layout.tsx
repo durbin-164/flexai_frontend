@@ -1,4 +1,4 @@
-import Layout from './component/customTheme/Layout'
+// import Layout from './component/depricate/customTheme/Layout'
 // import Navbar from './component/navbar/Navbar'
 import './globals.css'
 import { Inter } from 'next/font/google'
@@ -18,9 +18,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Layout>
+        {/* <Layout> */}
           {children}
-        </Layout>
+        {/* </Layout> */}
         </body>
     </html>
   )

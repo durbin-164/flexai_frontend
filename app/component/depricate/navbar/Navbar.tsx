@@ -4,7 +4,7 @@ import { AppBar, Box, Button, Link, Switch, Toolbar, styled, useTheme } from "@m
 import React from 'react';
 import SearchBar from "@/app/component/navbar/SearchBar";
 import HorizontalList from "@/app/component/navbar/HorizontalList";
-import globalTheme from "../customTheme/CustomTheme";
+import globalTheme from "../depricate/customTheme/CustomTheme";
 
 const Logo = styled('img')({
     height: '30px',

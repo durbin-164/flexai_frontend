@@ -1,7 +1,7 @@
 "use client"
 
 import { Container, CssBaseline, ThemeProvider } from "@mui/material"
-import Navbar from "../navbar/Navbar"
+import Navbar from "../../navbar/Navbar"
 import globalTheme from "./CustomTheme"
 
 export default function Layout({
