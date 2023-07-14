@@ -1,13 +1,14 @@
+import Home from "./component/home";
+import Navbar from "./component/navbar/Navbar";
 import Layout from "./layout/primary";
+import PublicRouter from "./router/public";
 
 function App() {
   return (
     <div>
-      <Layout>
-        <div>
-          Hello
-        </div>
-      </Layout>      
+        {/* <Layout> */}
+        <PublicRouter/>
+        {/* </Layout> */}
     </div>
   );
 }

@@ -1,12 +1,12 @@
 import { AppBar, List, styled } from "@mui/material";
 
-export const StyledAppBer = styled(AppBar)(() =>({
-    
+export const StyledAppBar = styled(AppBar)(() =>({
+    // position:'sticky'
 }));
 
 export const AppBarList = styled(List)(({ type }:{type: string}) => ({
     display: type === "row" ? "flex" : "block",
-    flexGrow: 3,
+    flexGrow: 1,
   justifyContent: "center",
   alignItems: "center",
 }));

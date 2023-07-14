@@ -1,22 +1,55 @@
-import { IconButton, ListItem } from "@mui/material";
-import { AppBarList, StyledAppBer } from "../../style/navbar";
+import { Button, Divider, IconButton, Link, ListItem, Stack, Toolbar } from "@mui/material";
+import { StyledAppBar } from "../../style/navbar";
 import { Brightness4, Brightness7 } from "@mui/icons-material";
 import { useContext } from "react";
 import { ThemeModeContext } from "../../context/theme";
 import { ThemeModeEnum } from "../../constant/enums";
+import { ReactComponent as Logo } from '../../asset/logo.svg';
+
 
 export default function DesktopNavbar(){
     const {themeMode, toggleThemeMode} = useContext(ThemeModeContext)
     return (
-        <StyledAppBer>
-            <AppBarList type="row">
-                <ListItem>Home</ListItem>
-                <ListItem>Image</ListItem>
-                <ListItem>PDF</ListItem>
-                <IconButton onClick={toggleThemeMode}>
-                    {themeMode === ThemeModeEnum.Light ? <Brightness4 /> : <Brightness7 />}
+        <StyledAppBar>
+            <Toolbar>
+                <IconButton href="/">
+                        <Logo style={{ width: '100px', height: '40px' }}/>
                 </IconButton>
-            </AppBarList>
-        </StyledAppBer>
+
+
+                <Stack 
+                    direction="row" 
+                    divider={<Divider orientation="vertical" flexItem />}
+                    spacing={3}
+                    margin="auto"
+                    >
+                        <Button href="/image" color="inherit">Image</Button>
+                        <Button href="/pdf" color="inherit">PDF</Button>
+
+
+                </Stack>
+
+                <Stack 
+                    direction="row" 
+                    margin="auto"
+                    >
+                    <IconButton onClick={toggleThemeMode}>
+                        {themeMode === ThemeModeEnum.Light ? <Brightness4 /> : <Brightness7 />}
+                    </IconButton>
+                </Stack>
+                   
+                
+                <Stack
+                     direction="row" 
+                     divider={<Divider orientation="vertical" flexItem />}
+                     spacing={3}
+                     margin="auto"
+                >
+                    <Button href="/login" color="inherit">Login</Button>
+                    <Button href="/signup" color="inherit">Signup</Button>
+                </Stack>
+
+            </Toolbar>
+        </StyledAppBar>
     );
 }

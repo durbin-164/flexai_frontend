@@ -16,7 +16,7 @@ export default function ThemeContextProvider({children}: {children: React.ReactN
         themeMode
     }), [themeMode])
 
-    const theme = themeMode === "light"? lightTheme: darkTheme
+    const theme = themeMode === ThemeModeEnum.Light? lightTheme: darkTheme
 
     return (
         <ThemeModeContext.Provider value ={colorMode}>

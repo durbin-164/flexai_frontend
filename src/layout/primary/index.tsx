@@ -1,16 +1,19 @@
-import React, {  } from "react";
-import { CssBaseline } from "@mui/material";
+import { Container, CssBaseline, Toolbar } from "@mui/material";
 import Navbar from "../../component/navbar/Navbar";
 import ColorContextProvider from "../../context/theme";
+import { Outlet } from "react-router-dom";
 
 
 
-export default function Layout({ children }:{children: React.ReactNode}){
+export default function Layout(){
     return (
       <ColorContextProvider>
         <CssBaseline />
           <Navbar/>
-          {children}
+          <Toolbar/>
+          <Container component="main">
+            <Outlet/>
+          </Container>
       </ColorContextProvider>
     );
   };
