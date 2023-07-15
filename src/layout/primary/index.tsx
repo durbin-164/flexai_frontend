@@ -11,7 +11,9 @@ export default function Layout(){
         <CssBaseline />
           <Navbar/>
           <Toolbar/>
-          <Container component="main">
+          <Container component="main"
+          //  sx={{backgroundColor: "blue"}}
+           >
             <Outlet/>
           </Container>
       </ColorContextProvider>
