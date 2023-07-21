@@ -1,13 +1,12 @@
 import { Container, CssBaseline, Toolbar } from "@mui/material";
 import Navbar from "../../component/navbar/Navbar";
-import ColorContextProvider from "../../context/theme";
 import { Outlet } from "react-router-dom";
-
-
+import CustomThemeProvider from "../../component/theme";
 
 export default function Layout(){
+
     return (
-      <ColorContextProvider>
+      <CustomThemeProvider>
         <CssBaseline />
           <Navbar/>
           <Toolbar/>
@@ -16,7 +15,7 @@ export default function Layout(){
            >
             <Outlet/>
           </Container>
-      </ColorContextProvider>
+      </CustomThemeProvider>
     );
   };
 

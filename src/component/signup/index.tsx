@@ -1,16 +1,39 @@
+import { useNavigate } from 'react-router-dom';
 import { LockOutlined, Visibility, VisibilityOff } from "@mui/icons-material";
 import { Avatar, Box, Button, Container, Grid, IconButton, InputAdornment, Link, TextField, Typography } from "@mui/material";
 import React from "react";
+import { SignupData, signupUser } from '../../redux/slices/userSlice';
+import { useAppDispatch } from '../../redux/store';
 
 export default function Signup(){
+    const dispatch = useAppDispatch();
 
     const [showPassword, setShowPassword] = React.useState(false);
+    const navigate = useNavigate();
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
     };
+
+    const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
+        const userData: SignupData = {
+            firstName: data.get("firstName") as string,
+            lastName: data.get("lastName") as string,
+            email: data.get('email') as string,
+            password: data.get('password') as string,
+          };
+
+        // console.log(userData);
+
+        dispatch(signupUser(userData));
+        navigate("/");
+
+      };
+
 
     return (
         <Container maxWidth="xs" sx={
@@ -28,7 +51,7 @@ export default function Signup(){
             </Avatar>
             <Typography component="h1" variant="h5">Sign up</Typography>
 
-            <Box component="form" noValidate onSubmit={() => {}} sx={{mt:2}}>
+            <Box component="form" onSubmit={handleFormSubmit} sx={{mt:2}}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
                         <TextField

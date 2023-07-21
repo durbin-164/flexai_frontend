@@ -1,7 +1,8 @@
 import { AppBar, List, styled } from "@mui/material";
 
 export const StyledAppBar = styled(AppBar)(() =>({
-    // position:'sticky'
+    // position:'static'
+    
 }));
 
 export const AppBarList = styled(List)(({ type }:{type: string}) => ({
