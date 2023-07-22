@@ -4,7 +4,6 @@ import { Avatar, Box, Button, Container, Grid, IconButton, InputAdornment, Link,
 import React from "react";
 import { ApiError, SignupData, signupUser } from '../../redux/slices/userSlice';
 import { RootState, useAppDispatch, useAppSelector } from '../../redux/store';
-import { wait } from '@testing-library/user-event/dist/utils';
 import { unwrapResult } from '@reduxjs/toolkit';
 
 export default function Signup(){
