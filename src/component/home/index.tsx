@@ -2,7 +2,7 @@ import { Container } from "@mui/material";
 
 export default function Home(){
     return (
-        <Container>
+        <Container sx = {{display:"flex"}}>
             <h1>this is home 1</h1>
             <h1>this is home 2</h1>
 
