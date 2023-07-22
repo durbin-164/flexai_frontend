@@ -48,8 +48,8 @@ export const signupUser = createAsyncThunk<User, SignupData, { state: RootState 
   'user/signup',
   async (userData, { rejectWithValue }) => {
     try {
-    //   const response = await axios.post<User>('http://localhost:8080/api/v1/signup', userData);
-    //   return response.data;
+      // const response = await axios.post<User>('http://localhost:8080/api/v1/signup', userData);
+      // return response.data;
 
     const user: User ={
         firstName: userData.firstName,
@@ -67,6 +67,7 @@ export const signupUser = createAsyncThunk<User, SignupData, { state: RootState 
           message: error.response?.data.message || 'An error occurred during signup',
         };
         return rejectWithValue(apiError);
+        // throw apiError
       }
       // If the error is not an AxiosError, we'll handle it here.
       const unknownError: ApiError = {
@@ -74,6 +75,7 @@ export const signupUser = createAsyncThunk<User, SignupData, { state: RootState 
         message: error instanceof Error ? error.message : 'An unknown error occurred during signup',
       };
       return rejectWithValue(unknownError);
+      // throw unknownError
     }
   }
 );
@@ -85,7 +87,7 @@ interface UserState {
   }
 
 const initialState: UserState = {
-  loading: false, // You may set it to true initially if you want to show a loading state before API calls
+  loading: true, // You may set it to true initially if you want to show a loading state before API calls
   user: null,
   apiError: null,
 };
