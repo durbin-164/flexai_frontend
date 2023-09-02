@@ -1,10 +1,19 @@
 import { LockOutlined, Visibility, VisibilityOff } from "@mui/icons-material";
 import { Avatar, Box, Button, Checkbox, Container, FormControlLabel, Grid, IconButton, InputAdornment, Link, TextField, Typography } from "@mui/material";
 import React from "react";
+import { useAppDispatch } from "../../redux/store";
+import { ApiError, LoginData, loginUser } from "../../redux/slices/userSlice";
+import { unwrapResult } from "@reduxjs/toolkit";
+import { useNavigate } from "react-router-dom";
 
 export default function Login(){
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+
 
     const [showPassword, setShowPassword] = React.useState(false);
+    const [error, setError] = React.useState<string| null>(null)
+
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -12,7 +21,7 @@ export default function Login(){
         event.preventDefault();
     };
 
-    const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         console.log({
@@ -20,6 +29,32 @@ export default function Login(){
           password: data.get('password'),
           remember_me: data.get("remember_me")  // return "remember" if checked otherwise null
         });
+
+        const loginData: LoginData = {
+            "username": data.get("email") as string,
+            "password": data.get("password") as string
+        }
+
+
+        try {
+            // Dispatch the signupUser action using unwrapResult
+            const action = await dispatch(loginUser(loginData));
+            // The following code will only execute if the signup is successful
+            // Redirect to the homepage
+            const user = unwrapResult(action);
+            console.log('user', user);
+            navigate("/"); // Replace '/' with the path of your homepage route
+          } catch (error) {
+            if ( (error as ApiError).message) {
+                // If the error is an API error, set the error state
+                setError((error as ApiError).message);
+              } else {
+                // Handle other types of errors if needed
+                setError(error as string)
+              }
+          }
+
+
       };
 
     return (

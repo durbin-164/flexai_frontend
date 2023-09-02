@@ -4,7 +4,7 @@ import { RootState } from '../store';
 import { User } from '../models/User';
 
 export interface LoginData {
-  email: string;
+  username: string;
   password: string;
 }
 
@@ -24,8 +24,31 @@ export const loginUser = createAsyncThunk<User, LoginData, { state: RootState }>
   'user/login',
   async (credentials, { rejectWithValue }) => {
     try {
-      const response = await axios.post<User>('http://localhost:8080/api/v1/login', credentials);
-      return response.data;
+      const formData = new FormData();
+      formData.append('username', credentials.username);
+      formData.append('password', credentials.password);
+
+      const response = await axios.post('http://localhost:8080/user/token', formData,  {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded', // Set the appropriate content type
+        },});
+
+        const user_me_response = await axios.get('http://localhost:8080/user/me', {
+          headers: {
+            'Authorization': `Bearer ${response.data.access_token}`,
+          },
+      });
+
+
+        const user: User ={
+          firstName: user_me_response.data.first_name,
+          lastName:user_me_response.data.last_name,
+          email:credentials.username,
+          accessToken: response.data.access_token,
+          refreshToken: response.data.refresh_token
+      }
+
+      return user;
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const apiError: ApiError = {
@@ -48,18 +71,33 @@ export const signupUser = createAsyncThunk<User, SignupData, { state: RootState 
   'user/signup',
   async (userData, { rejectWithValue }) => {
     try {
-      // const response = await axios.post<User>('http://localhost:8080/api/v1/signup', userData);
-      // return response.data;
+      const userRequestData = {
+        "username": userData.email,
+        "password": userData.password,
+        "first_name": userData.firstName,
+        "last_name": userData.lastName
 
-    const user: User ={
-        firstName: userData.firstName,
-        lastName:userData.lastName,
-        email:userData.email,
-        accessToken: "",
-        refreshToken: ""
-    }
+      }
+      const response = await axios.post('http://localhost:8080/user/signup', userRequestData);
+      
+      const formData = new FormData();
+      formData.append('username', userData.email);
+      formData.append('password', userData.password);
 
-    return user;
+      const token_response = await axios.post('http://localhost:8080/user/token', formData,  {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded', // Set the appropriate content type
+        },});
+
+      const user: User ={
+          firstName: userData.firstName,
+          lastName:userData.lastName,
+          email:userData.email,
+          accessToken: token_response.data.access_token,
+          refreshToken: token_response.data.refresh_token
+      }
+
+      return user;
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const apiError: ApiError = {
