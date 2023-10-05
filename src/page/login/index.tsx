@@ -1,10 +1,13 @@
-import { LockOutlined, Visibility, VisibilityOff } from "@mui/icons-material";
-import { Avatar, Box, Button, Checkbox, Container, FormControlLabel, Grid, IconButton, InputAdornment, Link, TextField, Typography } from "@mui/material";
+import { LockOutlined } from "@mui/icons-material";
+import { Avatar, Box, Button, Checkbox, Container, FormControlLabel, Grid, Link, TextField, Typography } from "@mui/material";
 import React from "react";
 import { useAppDispatch } from "../../redux/store";
-import { ApiError, LoginData, loginUser } from "../../redux/slices/userSlice";
+import {  LoginDataExternal, LoginDataInternal, loginUser } from "../../redux/slices/userSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { useNavigate } from "react-router-dom";
+import PasswordField from "../../component/common/password-field";
+import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
+import { AuthProviderEnum } from "../../constant/enums";
 
 export default function Login(){
     const dispatch = useAppDispatch();
@@ -13,6 +16,16 @@ export default function Login(){
 
     const [showPassword, setShowPassword] = React.useState(false);
     const [error, setError] = React.useState<string| null>(null)
+
+    const handleGoogleSignin =async (credential: CredentialResponse) =>{
+        console.log(credential)
+        const loginData: LoginDataExternal ={
+            provider: AuthProviderEnum.GOOGLE,
+            token: credential.credential as string
+        }
+
+        await handleLogin(loginData)
+    }
 
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -30,11 +43,16 @@ export default function Login(){
           remember_me: data.get("remember_me")  // return "remember" if checked otherwise null
         });
 
-        const loginData: LoginData = {
-            "username": data.get("email") as string,
+        const loginData: LoginDataInternal = {
+            "provider": AuthProviderEnum.INTERNAL,
+            "email": data.get("email") as string,
             "password": data.get("password") as string
         }
 
+        await handleLogin(loginData)
+      };
+
+    const handleLogin = async (loginData: LoginDataInternal | LoginDataExternal) =>{
 
         try {
             // Dispatch the signupUser action using unwrapResult
@@ -45,17 +63,12 @@ export default function Login(){
             console.log('user', user);
             navigate("/"); // Replace '/' with the path of your homepage route
           } catch (error) {
-            if ( (error as ApiError).message) {
-                // If the error is an API error, set the error state
-                setError((error as ApiError).message);
-              } else {
-                // Handle other types of errors if needed
-                setError(error as string)
-              }
+            console.log(error)
+            setError(error as string)
           }
 
+    }
 
-      };
 
     return (
         <Container maxWidth="xs" sx={
@@ -72,6 +85,7 @@ export default function Login(){
                 <LockOutlined />
             </Avatar>
             <Typography component="h1" variant="h5">Login</Typography>
+            {error?<Typography component="h1" variant="h5" color="error">{error}</Typography>: null}
 
             <Box component="form" onSubmit={handleFormSubmit} sx={{mt:2}}>
                 <Grid container spacing={2}>
@@ -88,28 +102,10 @@ export default function Login(){
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <TextField
-                            id="password"
-                            name="password"
-                            label="password"
-                            autoComplete="password"
-                            fullWidth
-                            required
-                            autoFocus
-                            type={showPassword ? 'text' : 'password'}
-                            InputProps={{
-                                endAdornment:
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                        aria-label="toggle password visibility"
-                                        onClick={handleClickShowPassword}
-                                        onMouseDown={handleMouseDownPassword}
-                                        edge="end"
-                                        >
-                                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                                        </IconButton>
-                                    </InputAdornment>
-                            }}
+                        <PasswordField
+                            showPassword={showPassword}
+                            handleClickShowPassword={handleClickShowPassword}
+                            handleMouseDownPassword={handleMouseDownPassword}
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -125,10 +121,19 @@ export default function Login(){
                     type="submit"
                     fullWidth
                     variant="contained"
-                    sx={{mt:2}}
+                    sx={{mt:2, mb:2}}
                 >
                     Login
                 </Button>
+
+                <GoogleLogin
+                    text='signin_with'
+                    context='signin'
+                    onSuccess={handleGoogleSignin}
+                    onError={() => {
+                        console.log('Login Failed');
+                    }}
+                />
 
                 <Grid container marginTop={2}>
                     <Grid item xs>

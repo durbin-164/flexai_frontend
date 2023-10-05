@@ -1,11 +1,11 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Login from "../../component/login";
-import Home from "../../component/home";
+import { Routes, Route } from "react-router-dom";
+import Login from "../../page/login";
+import Home from "../../page/home";
 import Layout from "../../layout/primary";
-import Signup from "../../component/signup";
-import ImagePage from "../../component/image";
-import PDFPage from "../../component/pdf";
-import ForgotPassword from "../../component/forgotpassword";
+import Signup from "../../page/signup";
+import ImagePage from "../../page/image";
+import PDFPage from "../../page/pdf";
+import ForgotPassword from "../../page/forgotpassword";
 
 export default function PublicRouter(){
     return (

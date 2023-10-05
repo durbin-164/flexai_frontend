@@ -1,12 +1,9 @@
 import { Notifications } from "@mui/icons-material";
 import { Avatar, Badge, Button, Divider, IconButton, Menu, MenuItem, Stack, Tooltip } from "@mui/material";
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import { RootState, useAppDispatch, useAppSelector } from "../../redux/store";
 import { logout } from "../../redux/slices/userSlice";
-
-interface Person {
-    firstName: string;
-  }
+import { googleLogout } from "@react-oauth/google";
 
 
 export default function UserMenu(){
@@ -24,6 +21,7 @@ export default function UserMenu(){
 
     const handleLogoutClick = () => {
         setAnchorEl(null)
+        googleLogout()
         dispatch(logout())
     }
 
