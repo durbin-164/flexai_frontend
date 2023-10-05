@@ -6,6 +6,7 @@ import Signup from "../../page/signup";
 import ImagePage from "../../page/image";
 import PDFPage from "../../page/pdf";
 import ForgotPassword from "../../page/forgotpassword";
+import ProtectedRoute from "../private";
 
 export default function PublicRouter(){
     return (
@@ -15,8 +16,18 @@ export default function PublicRouter(){
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/forgotpassword" element={<ForgotPassword />} />
-                <Route path="/image" element={<ImagePage />} />
-                <Route path="/pdf" element={<PDFPage />} />
+                <Route path="/image" element={
+                                        <ProtectedRoute>
+                                            <ImagePage />
+                                        </ProtectedRoute>} 
+                                        />
+
+                <Route path="/pdf" element={
+                                        <ProtectedRoute>
+                                            <PDFPage />
+                                        </ProtectedRoute>} />
+
+
                 <Route path="*" element={<Home/>} />
             </Route>
         </Routes>
